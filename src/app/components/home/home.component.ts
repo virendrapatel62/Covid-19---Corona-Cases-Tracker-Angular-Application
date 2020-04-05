@@ -14,6 +14,7 @@ export class HomeComponent implements OnInit {
   totalActive = 0;
   totalDeaths = 0;
   totalRecovered = 0;
+  loading = true;
   globalData: GlobalDataSummary[];
   pieChart: GoogleChartInterface = {
     chartType: 'PieChart'
@@ -23,6 +24,41 @@ export class HomeComponent implements OnInit {
   }
   constructor(private dataService: DataServiceService) { }
 
+
+  
+  ngOnInit(): void {
+
+    this.dataService.getGlobalData()
+      .subscribe(
+        {
+          next: (result) => {
+            console.log(result);
+            this.globalData = result;
+            result.forEach(cs => {
+              if (!Number.isNaN(cs.confirmed)) {
+                this.totalActive += cs.active
+                this.totalConfirmed += cs.confirmed
+                this.totalDeaths += cs.deaths
+                this.totalRecovered += cs.active
+              }
+
+            })
+
+            this.initChart('c');
+          }, 
+          complete : ()=>{
+            this.loading = false;
+          }
+        }
+      )
+  }
+
+
+
+  updateChart(input: HTMLInputElement) {
+    console.log(input.value);
+    this.initChart(input.value)
+  }
 
   initChart(caseType: string) {
 
@@ -60,7 +96,11 @@ export class HomeComponent implements OnInit {
       //firstRowIsData: true,
 
       options: {
-        height: 500
+        height: 500, 
+        animation:{
+          duration: 1000,
+          easing: 'out',
+        },
       },
     };
     this.columnChart = {
@@ -69,39 +109,13 @@ export class HomeComponent implements OnInit {
       //firstRowIsData: true,
 
       options: {
-        height: 500
+        height: 500, 
+        animation:{
+          duration: 1000,
+          easing: 'out',
+        },
       },
     };
-  }
-  ngOnInit(): void {
-
-    this.dataService.getGlobalData()
-      .subscribe(
-        {
-          next: (result) => {
-            console.log(result);
-            this.globalData = result;
-            result.forEach(cs => {
-              if (!Number.isNaN(cs.confirmed)) {
-                this.totalActive += cs.active
-                this.totalConfirmed += cs.confirmed
-                this.totalDeaths += cs.deaths
-                this.totalRecovered += cs.active
-              }
-
-            })
-
-            this.initChart('c');
-          }
-        }
-      )
-  }
-
-
-
-  updateChart(input: HTMLInputElement) {
-    console.log(input.value);
-    this.initChart(input.value)
   }
 
 }

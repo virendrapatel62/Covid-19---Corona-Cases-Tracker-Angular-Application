@@ -1,3 +1,7 @@
+<div class="ui inverted dimmer" [class.active]='loading'>
+    <div class="ui text loader">Loading</div>
+</div>
+
 <div class="jumbotron bg-white text-center p-0 m-0 ">
     <h1 class="display-4">Corona Covid-19 Tracker Country Wise</h1>
     <hr>
@@ -13,24 +17,32 @@
     <app-dashboard-card [totalConfirmed]='totalConfirmed' [totalActive]='totalActive' [totalRecovered]='totalRecovered' [totalDeaths]='totalDeaths'></app-dashboard-card>
 
 
-    <div class="card">
+    <div class="row">
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Sno.</th>
-                    <th>Date</th>
-                    <th>Cases</th>
-                </tr>
-            </thead>
+        <div class="col">
 
-            <tbody>
-                <tr *ngFor='let cs of selectedCountryData; index as i '>
-                    <td>{{i+1}}</td>
-                    <td>{{cs.date | date}}</td>
-                    <td>{{cs.cases}}</td>
-                </tr>
-            </tbody>
-        </table>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Sno.</th>
+                        <th>Date</th>
+                        <th>Cases</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor='let cs of selectedCountryData; index as i '>
+                        <td>{{i+1}}</td>
+                        <td>{{cs.date | date}}</td>
+                        <td>{{cs.cases}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col">
+            <google-chart [data]="lineChart"></google-chart>
+        </div>
+
+
     </div>
 </div>
