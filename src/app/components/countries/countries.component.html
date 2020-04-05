@@ -12,4 +12,23 @@
     </div>
     <app-dashboard-card [totalConfirmed]='totalConfirmed' [totalActive]='totalActive' [totalRecovered]='totalRecovered' [totalDeaths]='totalDeaths'></app-dashboard-card>
 
+
+    <div class="card">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Sno.</th>
+                    <th>Date</th>
+                    <th>Cases</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor='let d of selectedCountryData; index as i'>
+                    <td>{{i+1}}</td>
+                    <td>{{d.date | date}}</td>
+                    <td>{{d.cases}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
