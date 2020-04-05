@@ -17,32 +17,33 @@ export class DataServiceService {
     return this.http.get(this.dateWiseDataUrl, { responseType: 'text' })
       .pipe(map(result => {
         let rows = result.split('\n');
+        // console.log(rows);
+        let mainData = {};
         let header = rows[0];
-        let headerValues = header.split(/,(?=\S)/)
-        headerValues.splice(0, 4);
-        console.log(headerValues);
-        let data = {}
-
-        rows.splice(0, 1);
-        rows.forEach(row => {
-          // console.log(row);
+        let dates = header.split(/,(?=\S)/)
+        dates.splice(0 , 4);
+        rows.splice(0 , 1);
+        rows.forEach(row=>{
           let cols = row.split(/,(?=\S)/)
           let con = cols[1];
-          data[con] = []
-          cols.splice(0, 4);
-          cols.forEach((el, index) => {
-            let cs : DateWiseData = {
-              cases : +el , 
+          cols.splice(0 , 4);
+          // console.log(con , cols);
+          mainData[con] = [];
+          cols.forEach((value , index)=>{
+            let dw : DateWiseData = {
+              cases : +value ,
               country : con , 
-              date : new Date(Date.parse(headerValues[index]))
-            }
-            data[con].push(cs)
-          })
-        })
-        
+              date : new Date(Date.parse(dates[index])) 
 
-        return data;
-        
+            }
+            mainData[con].push(dw)
+          })
+          
+        })
+
+
+        // console.log(mainData);
+        return mainData;
       }))
   }
 

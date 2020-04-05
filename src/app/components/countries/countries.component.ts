@@ -12,11 +12,11 @@ export class CountriesComponent implements OnInit {
 
   data : GlobalDataSummary[];
   countries : string[] = [];
-  selectedCountryData : DateWiseData[] = [];
   totalConfirmed = 0;
   totalActive = 0;
   totalDeaths = 0;
   totalRecovered = 0;
+  selectedCountryData : DateWiseData[]; 
   dateWiseData ;
   constructor(private service : DataServiceService) { }
 
@@ -24,9 +24,8 @@ export class CountriesComponent implements OnInit {
 
     this.service.getDateWiseData().subscribe(
       (result)=>{
-        // console.log(result);
         this.dateWiseData = result;
-        console.log(result);
+        // console.log(result);
       }
     )
 
@@ -49,8 +48,8 @@ export class CountriesComponent implements OnInit {
       }
     })
 
-    this.selectedCountryData = this.dateWiseData[country];
-    console.log(this.selectedCountryData);
+    this.selectedCountryData  = this.dateWiseData[country]
+    // console.log(this.selectedCountryData);
     
   }
 
