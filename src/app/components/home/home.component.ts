@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataServiceService } from 'src/app/services/data-service.service';
 import { GlobalDataSummary } from 'src/app/models/gloabl-data';
-import { GoogleChartInterface } from 'ng2-google-charts/google-charts-interfaces';
 
 @Component({
   selector: 'app-home',
@@ -16,12 +15,22 @@ export class HomeComponent implements OnInit {
   totalRecovered = 0;
   loading = true;
   globalData: GlobalDataSummary[];
-  pieChart: GoogleChartInterface = {
-    chartType: 'PieChart'
+  datatable = [];
+  chart = {
+    PieChart : "PieChart" ,
+    ColumnChart : 'ColumnChart' ,
+    LineChart : "LineChart", 
+    height: 500, 
+    options: {
+      animation:{
+        duration: 1000,
+        easing: 'out',
+      },
+      is3D: true
+    }  
   }
-  columnChart: GoogleChartInterface = {
-    chartType: 'ColumnChart'
-  }
+  
+  
   constructor(private dataService: DataServiceService) { }
 
 
@@ -62,8 +71,8 @@ export class HomeComponent implements OnInit {
 
   initChart(caseType: string) {
 
-    let datatable = [];
-    datatable.push(["Country", "Cases"])
+    this.datatable = [];
+    // this.datatable.push(["Country", "Cases"])
     
     this.globalData.forEach(cs => {
       let value :number ;
@@ -83,39 +92,12 @@ export class HomeComponent implements OnInit {
             value = cs.recovered
         
 
-        datatable.push([
+        this.datatable.push([
             cs.country, value
           ])
     })
-    console.log(datatable);
+    console.log(this.datatable);
 
-
-    this.pieChart = {
-      chartType: 'PieChart',
-      dataTable: datatable,
-      //firstRowIsData: true,
-
-      options: {
-        height: 500, 
-        animation:{
-          duration: 1000,
-          easing: 'out',
-        },
-      },
-    };
-    this.columnChart = {
-      chartType: 'ColumnChart',
-      dataTable: datatable,
-      //firstRowIsData: true,
-
-      options: {
-        height: 500, 
-        animation:{
-          duration: 1000,
-          easing: 'out',
-        },
-      },
-    };
   }
 
 }
